@@ -1,3 +1,4 @@
+// auth.js
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
@@ -16,6 +17,7 @@ function getAccessToken(oAuth2Client) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
+    prompt: 'consent', // 👈 fuerza refresh_token nuevo
   });
 
   console.log('\n👉 Visita este link y copia el código que te da:\n', authUrl);
@@ -31,7 +33,7 @@ function getAccessToken(oAuth2Client) {
       if (err) return console.error('❌ Error al recuperar el token:', err);
       oAuth2Client.setCredentials(token);
       fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
-      console.log('✅ Token guardado en:', TOKEN_PATH);
+      console.log('✅ Token guardado correctamente en:', TOKEN_PATH);
     });
   });
 }
